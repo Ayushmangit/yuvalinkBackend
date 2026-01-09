@@ -1,17 +1,32 @@
-import User from '#models/user'
+import User ,{UserRole}from '#models/user'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class AuthController {
+async register({ request }: HttpContext) {
+  const { fullName, email, password } = request.only([
+    'fullName',
+    'email',
+    'password',
+  ])
 
-  async register({ request }: HttpContext) {
-    const payload = request.body()
-    const user = await User.create(payload)
-    const token = await User.accessTokens.create(user)
-    return {
-      user,
-      token: token.value!.release(),
-    }
+  const user = await User.create({
+    fullName,
+    email,
+    password,
+    role: UserRole.VOLUNTEER, 
+  })
+
+  const token = await User.accessTokens.create(user)
+
+  return {
+    user: {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    },
+    token: token.value!.release(),
   }
+}
 
   async login({ request }: HttpContext) {
     const { email, password } = request.only(['email', 'password'])
@@ -21,7 +36,11 @@ export default class AuthController {
     const token = await User.accessTokens.create(user)
 
     return {
-      user,
+      user:{
+        id: user.id,
+        email: user.email,
+        role: user.role,
+      },
       token: token.value!.release(),
     }
   }
@@ -29,7 +48,11 @@ export default class AuthController {
   async me({ auth }: HttpContext) {
     await auth.use('api').authenticate()
     return {
-      user: auth.user,
+      user: {
+         id: auth.user!.id,
+         email: auth.user!.email,
+         role:auth.user!.role,
+      },
     }
   }
 
