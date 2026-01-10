@@ -7,4 +7,7 @@ router.group(() => {
   router.post('/login', [AuthController, 'login'])
   router.get('/me', [AuthController, 'me']).use(middleware.auth())
   router.post('/logout', [AuthController, 'logout']).use(middleware.auth())
+  router.get('/test-hash', async () => {
+  return 'OK'
+})
 }).prefix('/auth')
