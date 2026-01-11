@@ -52,10 +52,15 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare tier: UserTier
 
-  /**
-   * [TODO:description]
-   * @type {string}
-   */
+  @column()
+  declare city: string
+
+  @column()
+  declare skills: string
+
+  @column()
+  declare activeTasks: number
+
   @column({ serializeAs: null })
   declare password: string
 

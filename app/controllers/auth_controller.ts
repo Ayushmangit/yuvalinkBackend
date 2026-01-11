@@ -3,11 +3,19 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 export default class AuthController {
 
+
+  async index() {
+    const data = await User.query()
+    return data
+  }
+
   async register({ request }: HttpContext) {
-    const { fullName, email, password } = request.only([
+    const { fullName, email, password, city, skills } = request.only([
       'fullName',
       'email',
       'password',
+      'city',
+      'skills'
     ])
 
     const user = await User.create({
@@ -16,7 +24,10 @@ export default class AuthController {
       password,
       role: UserRole.VOLUNTEER,
       status: UserStatus.ACTIVE,
-      tier: UserTier.one
+      tier: UserTier.one,
+      activeTasks: 0,
+      city,
+      skills,
     })
 
     const token = await User.accessTokens.create(user)
@@ -61,6 +72,8 @@ export default class AuthController {
         status: auth.user!.status,
         verification: auth.user!.verification,
         tier: auth.user!.tier,
+        city: auth.user!.city,
+        skills: auth.user!.skills
       },
     }
   }

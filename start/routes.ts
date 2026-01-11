@@ -4,6 +4,7 @@ import { middleware } from './kernel.js'
 import IncidentsController from '#controllers/incidents_controller'
 
 router.group(() => {
+  router.get('/', [AuthController, 'index'])
   router.post('/register', [AuthController, 'register'])
   router.post('/login', [AuthController, 'login'])
   router.get('/me', [AuthController, 'me']).use(middleware.auth())
