@@ -11,7 +11,6 @@ export default class IncidentsController {
       'description'
     ])
 
-    // Create incident (active by default)
     const incident = await Incident.create({
       name: payload.name,
       city: payload.city,
@@ -19,7 +18,6 @@ export default class IncidentsController {
       status: true,
     })
 
-    // Create related task
     await Task.create({
       incidentId: incident.id,
       startTime: new Date(),
