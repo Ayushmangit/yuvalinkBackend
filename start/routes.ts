@@ -21,3 +21,19 @@ router.group(() => {
 })
   .prefix('/incidents')
   .use(middleware.auth())
+
+router.group(() => {
+  router.get('/tasks', 'TasksController.index')
+  router.patch('/tasks/:id/accept', 'TasksController.accept')
+  router.patch('/tasks/:id/decline', 'TasksController.decline')
+}).use(middleware.auth())
+
+router.group(() => {
+  router.get('/tasks', 'TaskCrudController.index')
+  router.post('/tasks', 'TaskCrudController.store')
+  router.patch('/tasks/:id', 'TaskCrudController.update')
+  router.delete('/tasks/:id', 'TaskCrudController.destroy')
+})
+  .prefix('/admin')
+  .use(middleware.auth())
+
