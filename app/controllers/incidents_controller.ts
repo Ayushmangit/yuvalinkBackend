@@ -15,7 +15,8 @@ export default class IncidentsController {
     const incident = await Incident.create({
       name: payload.name,
       city: payload.city,
-      status: true, // active immediately
+      description: payload.description,
+      status: true,
     })
 
     // Create related task
