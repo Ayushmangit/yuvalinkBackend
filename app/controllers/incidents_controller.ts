@@ -11,41 +11,23 @@ export default class IncidentsController {
       'description'
     ])
 
+    // Create incident (active by default)
     const incident = await Incident.create({
       name: payload.name,
       city: payload.city,
-      status: false, // default state
+      status: true, // active immediately
     })
 
-    return response.created({
-      message: 'Incident created successfully',
-      incident,
-    })
-  }
-
-  /**
-   * PATCH /incidents/:id/activate
-   */
-  async activate({ params, response }: HttpContext) {
-    const incident = await Incident.findOrFail(params.id)
-
-    if (incident.status) {
-      return response.badRequest({
-        message: 'Incident already active',
-      })
-    }
-
-    incident.status = true
-    await incident.save()
-
+    // Create related task
     await Task.create({
       incidentId: incident.id,
       startTime: new Date(),
     })
 
-    return {
-      message: 'Incident activated and task created',
-    }
+    return response.created({
+      message: 'Incident and task created successfully',
+      incident,
+    })
   }
 }
 

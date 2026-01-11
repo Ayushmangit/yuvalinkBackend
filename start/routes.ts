@@ -16,8 +16,7 @@ router.group(() => {
 
 
 router.group(() => {
-  router.post('/incidents', 'IncidentsController.store')
-  router.patch('/incidents/:id/activate', 'IncidentsController.activate')
+  router.post('/incidents', [IncidentsController, 'store'])
 }).use(middleware.auth())
 
 router.group(() => {
