@@ -1,12 +1,6 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
-
-export enum IncidentStatus {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive'
-}
-
 export default class Incident extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
@@ -21,7 +15,7 @@ export default class Incident extends BaseModel {
   declare city: string
 
   @column()
-  declare status: IncidentStatus
+  declare status: boolean
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

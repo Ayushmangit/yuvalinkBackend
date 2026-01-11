@@ -1,52 +1,28 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import Incident from '#models/incident'
+import Task from '#models/task'
+import type { HttpContext } from '@adonisjs/core/http'
 
 export default class IncidentsController {
-  async index({ response }: HttpContext) {
-    const incidents = await Incident.query()
+  async activate({ params, response }: HttpContext) {
+    const incident = await Incident.findOrFail(params.id)
 
-    return response.ok(incidents)
-  }
-
-  async create({ request, response }: HttpContext) {
-    const payload = request.only([
-      'name',
-      'city',
-      'volunteers',
-      'description',
-    ])
-
-    const incident = await Incident.create(payload)
-
-    return response.created({
-      message: 'Incident created successfully',
-      incident,
-    })
-  }
-
-  async updateIncident({ request, response, params }: HttpContext) {
-    const payload = request.only([
-      'name',
-      'city',
-      'volunteers',
-      'description',
-      'status'
-    ])
-
-    const incident = await Incident.find(params.id)
-
-    if (!incident) {
-      return response.notFound({
-        message: 'Incident not found',
+    if (incident.status) {
+      return response.badRequest({
+        message: 'Incident already active',
       })
     }
 
-    incident.merge(payload)
+    incident.status = true
     await incident.save()
 
-    return response.ok({
-      message: 'Incident updated successfully',
-      incident,
+    await Task.create({
+      incidentId: incident.id,
+      startTime: new Date(),
     })
+
+    return {
+      message: 'Incident activated and task created',
+    }
   }
 }
+
