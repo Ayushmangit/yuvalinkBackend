@@ -14,13 +14,11 @@ router.group(() => {
   })
 }).prefix('/auth')
 
+
 router.group(() => {
-  // router.get('/', [IncidentsController, 'index'])
-  router.post('/', [IncidentsController, 'activate'])
-  // router.patch('/:id', [IncidentsController, 'updateIncident'])
-})
-  .prefix('/incidents')
-  .use(middleware.auth())
+  router.post('/incidents', 'IncidentsController.store')
+  router.patch('/incidents/:id/activate', 'IncidentsController.activate')
+}).use(middleware.auth())
 
 router.group(() => {
   router.get('/tasks', 'TasksController.index')

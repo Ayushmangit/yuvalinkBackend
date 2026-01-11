@@ -1,8 +1,31 @@
+
 import Incident from '#models/incident'
 import Task from '#models/task'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class IncidentsController {
+  async store({ request, response }: HttpContext) {
+    const payload = request.only([
+      'name',
+      'city',
+      'description'
+    ])
+
+    const incident = await Incident.create({
+      name: payload.name,
+      city: payload.city,
+      status: false, // default state
+    })
+
+    return response.created({
+      message: 'Incident created successfully',
+      incident,
+    })
+  }
+
+  /**
+   * PATCH /incidents/:id/activate
+   */
   async activate({ params, response }: HttpContext) {
     const incident = await Incident.findOrFail(params.id)
 
@@ -25,4 +48,5 @@ export default class IncidentsController {
     }
   }
 }
+
 
