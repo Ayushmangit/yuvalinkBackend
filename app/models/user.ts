@@ -13,6 +13,23 @@ export enum UserRole {
   ADMIN = 'admin',
   VOLUNTEER = 'volunteer',
 }
+
+export enum UserStatus {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+}
+
+export enum UserVerification {
+  VERIFIED = 'verified',
+  UNVERIFIED = 'unverified',
+}
+
+export enum UserTier {
+  one = '1',
+  two = '2',
+  three = '3'
+}
+
 export default class User extends compose(BaseModel, AuthFinder) {
   @column({ isPrimary: true })
   declare id: number
@@ -26,6 +43,19 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare role: UserRole
 
+  @column()
+  declare status: UserStatus
+
+  @column()
+  declare verification: UserVerification
+
+  @column()
+  declare tier: UserTier
+
+  /**
+   * [TODO:description]
+   * @type {string}
+   */
   @column({ serializeAs: null })
   declare password: string
 

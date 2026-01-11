@@ -2,6 +2,7 @@ import User, { UserRole } from '#models/user'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class AuthController {
+
   async register({ request }: HttpContext) {
     const { fullName, email, password } = request.only([
       'fullName',
@@ -41,6 +42,7 @@ export default class AuthController {
         id: user.id,
         email: user.email,
         role: user.role,
+        status: user.status
       },
       token: token.value!.release(),
     }
@@ -53,15 +55,16 @@ export default class AuthController {
         id: auth.user!.id,
         email: auth.user!.email,
         role: auth.user!.role,
-        fullName: auth.user!.fullName
+        fullName: auth.user!.fullName,
+        status: auth.user!.status,
+        verification: auth.user!.verification,
+        tier: auth.user!.tier,
       },
     }
   }
 
   async logout({ auth }: HttpContext) {
     await auth.use('api').authenticate()
-
     return { message: 'Logged out' }
   }
-
 }
