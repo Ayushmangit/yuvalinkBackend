@@ -15,9 +15,9 @@ router.group(() => {
 }).prefix('/auth')
 
 router.group(() => {
-  router.get('/', [IncidentsController, 'index'])
-  router.post('/', [IncidentsController, 'create'])
-  router.patch('/:id', [IncidentsController, 'updateIncident'])
+  // router.get('/', [IncidentsController, 'index'])
+  router.post('/', [IncidentsController, 'activate'])
+  // router.patch('/:id', [IncidentsController, 'updateIncident'])
 })
   .prefix('/incidents')
   .use(middleware.auth())
