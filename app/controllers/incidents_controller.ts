@@ -4,6 +4,11 @@ import Task from '#models/task'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class IncidentsController {
+  async index() {
+    const data = await Incident.query().where('status', true)
+    return data
+  }
+
   async store({ request, response }: HttpContext) {
     const payload = request.only([
       'name',
@@ -17,9 +22,12 @@ export default class IncidentsController {
       description: payload.description,
       status: true,
     })
+    console.log(incident.id)
 
     await Task.create({
       incidentId: incident.id,
+      title: incident.name,
+      supervisor: "NDRF",
       startTime: new Date(),
     })
 

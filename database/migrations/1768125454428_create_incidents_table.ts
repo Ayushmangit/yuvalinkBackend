@@ -11,6 +11,7 @@ export default class extends BaseSchema {
       table.text('description').notNullable()
       table.string('volunteers').notNullable().defaultTo('0')
       table.boolean('status').defaultTo(true)
+      table.unique(['name', 'city'])
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })

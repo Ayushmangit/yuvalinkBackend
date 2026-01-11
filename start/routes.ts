@@ -16,6 +16,7 @@ router.group(() => {
 
 
 router.group(() => {
+  router.get('/incidents', [IncidentsController, 'index'])
   router.post('/incidents', [IncidentsController, 'store'])
 }).use(middleware.auth())
 
