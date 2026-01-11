@@ -1,4 +1,4 @@
-import User, { UserRole } from '#models/user'
+import User, { UserRole, UserStatus, UserTier } from '#models/user'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class AuthController {
@@ -15,6 +15,8 @@ export default class AuthController {
       email,
       password,
       role: UserRole.VOLUNTEER,
+      status: UserStatus.ACTIVE,
+      tier: UserTier.one
     })
 
     const token = await User.accessTokens.create(user)
